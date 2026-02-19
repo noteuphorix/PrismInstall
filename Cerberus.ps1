@@ -18,6 +18,7 @@ if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 }
 
 # --- Configuration ---
+$prismExePath = "$env:LOCALAPPDATA\Programs\PrismLauncher\prismlauncher.exe"
 $prismPath = "$env:APPDATA\PrismLauncher"
 $instancePath = "$prismPath\instances\Euphoria Pack +"
 $minecraftPath = "$instancePath\minecraft"
@@ -34,10 +35,10 @@ $choice = Read-Host "Would you like to update/install the modpack? (yes/no)"
 if ($choice -ne "yes") { exit }
 
 # 1. Prism Launcher Check & Auto-Install
-if (!(Test-Path $prismPath)) {
-    Write-Host "Prism Launcher not found. Attempting to install via Winget..." -ForegroundColor Yellow
+if (!(Test-Path $prismExePath)) {
+    Write-Host "Prism Launcher not found at $prismExePath. Attempting to install via Winget..." -ForegroundColor Yellow
     winget install PrismLauncher.PrismLauncher --accept-source-agreements --accept-package-agreements -e
-    if ($LASTEXITCODE -ne 0 -and !(Test-Path $prismPath)) {
+    if ($LASTEXITCODE -ne 0 -and !(Test-Path $prismExePath)) {
         Write-Host "`nWinget download failed! Install manually: https://prismlauncher.org/" -ForegroundColor Red
         Pause; exit
     }
@@ -70,9 +71,7 @@ foreach ($relPath in $filesToOverwrite) {
     if (Test-Path $srcFile) {
         if ($relPath -eq "instance.cfg") {
             Write-Host "Patching instance.cfg for current user..." -ForegroundColor Gray
-            # Read the file, replace the hardcoded "Euphoria" path with the current user's roaming path
             $content = Get-Content $srcFile -Raw
-            # We use -replace with a regex that looks for the JavaPath and swaps the user segment
             $pattern = "JavaPath=C:/Users/[^/]+/AppData/Roaming/PrismLauncher"
             $replacement = "JavaPath=$($env:APPDATA -replace '\\', '/')"
             $content = $content -replace $pattern, $replacement
