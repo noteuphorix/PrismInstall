@@ -40,6 +40,7 @@ if (!(Test-Path $prismExePath)) {
     winget install PrismLauncher.PrismLauncher --accept-source-agreements --accept-package-agreements -e
     if ($LASTEXITCODE -ne 0 -and !(Test-Path $prismExePath)) {
         Write-Host "`nWinget download failed! Install manually: https://prismlauncher.org/" -ForegroundColor Red
+        Write-Host "`nRe-run the script after install!" -ForegroundColor Red
         Pause; exit
     }
     Start-Sleep -Seconds 5
@@ -73,7 +74,7 @@ foreach ($relPath in $filesToOverwrite) {
             Write-Host "Patching instance.cfg for current user..." -ForegroundColor Gray
             $content = Get-Content $srcFile -Raw
             $pattern = "JavaPath=C:/Users/[^/]+/AppData/Roaming/PrismLauncher"
-            $replacement = "JavaPath=$($env:APPDATA -replace '\\', '/')"
+            $replacement = "JavaPath=$($env:APPDATA -replace '\\', '/')/PrismLauncher"
             $content = $content -replace $pattern, $replacement
             Set-Content -Path $destFile -Value $content
         } else {
