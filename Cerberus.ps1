@@ -99,6 +99,27 @@ foreach ($relPath in $filesToOverwrite) {
     }
 }
 
+# options.txt keybind overwrite prompt
+$srcOptions = Join-Path $tempExtract "minecraft/options.txt"
+if (Test-Path $srcOptions) {
+    Write-Host ""
+    Write-Host "  [?] Would you like to overwrite keybinds with the server default? (y/n)" -ForegroundColor Yellow
+    Write-Host "      Recommended if this is your first time using the modpack."
+    Write-Host "      Warning: This will overwrite your current keybinds for this instance." -ForegroundColor Red
+    Write-Host ""
+    $keybindChoice = Read-Host "  y/n"
+    if ($keybindChoice -eq "y") {
+        $destOptions = Join-Path $minecraftPath "options.txt"
+        $destDir = Split-Path $destOptions
+        if (!(Test-Path $destDir)) { New-Item -ItemType Directory -Path $destDir | Out-Null }
+        Copy-Item $srcOptions $destOptions -Force
+        Write-Host "        > Keybinds overwritten." -ForegroundColor DarkGray
+    } else {
+        Write-Host "        > Keybinds skipped." -ForegroundColor DarkGray
+    }
+    Write-Host ""
+}
+
 # 6. Mods Folder Handling
 Write-Host "  [4/5] Refreshing mods folder..." -ForegroundColor Cyan
 $srcMods = Join-Path $tempExtract "minecraft/mods"
