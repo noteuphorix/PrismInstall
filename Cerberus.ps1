@@ -25,7 +25,7 @@ $minecraftPath = "$instancePath\minecraft"
 $modsPath = "$minecraftPath\mods"
 $autoModPath = "$minecraftPath\automodpack"
 
-$dropboxUrl = "https://www.dropbox.com/scl/fo/fixz2jzj2h9cb7tqzxb6s/ALMbFcvwLNg1XUWlySVR9Ro?rlkey=28l2d8a7i0dveyyapuoq8sw3e&st=4o8g0fvz&dl=1"
+$dropboxUrl = "https://www.dropbox.com/scl/fi/3htbxd9sr9vw3n4e2ltsc/Euphoria-Pack.zip?rlkey=vca2u4tw0pyjihcrji2a7kll8&st=zk8c5262&dl=1"
 $tempZip = "$env:TEMP\EuphoriaDownload.zip"
 $tempExtract = "$env:TEMP\EuphoriaExtract"
 
